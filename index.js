@@ -1,23 +1,17 @@
-async function fetchAndDisplayTable() {
+async function fetchAndDisplayContent() {
     try {
-        // Fetch the HTML page
-        const response = await fetch('https://example.com/page-with-table.html'); // Replace with the actual URL of the page with the table
-        const text = await response.text();
+        const response = await fetch('https://example.com/page-with-content.html', {
+            mode: 'no-cors' // Enable no-cors mode
+        });
 
-        // Parse the fetched HTML
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-
-        // Extract the table element
-        const table = doc.querySelector('table');
-        if (table) {
-            // Insert the table into the page
-            document.getElementById('table-container').innerHTML = table.outerHTML;
+        // `no-cors` doesn't allow reading the response content directly
+        if (response.ok) {
+            document.getElementById('content-container').innerHTML = 'Fetched successfully with no-cors, but content cannot be accessed due to restrictions.';
         } else {
-            document.getElementById('table-container').innerHTML = 'No table found in the provided HTML.';
+            document.getElementById('content-container').innerHTML = 'Failed to fetch with no-cors.';
         }
     } catch (error) {
-        console.error('Error fetching or displaying the table:', error);
-        document.getElementById('table-container').innerHTML = 'Failed to fetch the table.';
+        console.error('Error fetching content:', error);
+        document.getElementById('content-container').innerHTML = 'Failed to fetch the content.';
     }
 }

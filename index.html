@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table Fetcher</title>
+    <title>Display JSON as Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <h1>Fetched Table</h1>
-    <div id="table-container">Loading table...</div>
-    <button onclick="fetchAndDisplayTable()">Fetch Table</button>
+    <h1>Fetch JSON and Display as Table</h1>
+    <button onclick="fetchAndDisplayJSON()">Fetch Data</button>
+    <div id="table-container"></div>
 
     <!-- Link to the JavaScript file -->
     <script src="index.js"></script>

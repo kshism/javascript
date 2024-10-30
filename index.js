@@ -23,8 +23,20 @@ document.addEventListener("DOMContentLoaded", () => {
 async function fetchAndDisplayJSON() {
     try {
         // Replace with your actual JSON URL
-        const response = await fetch('https://api.example.com/data');
+        const url = 'https://api.example.com/data'; // Change to your API endpoint
         
+        // Define the headers you need to send
+        const headers = {
+            'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
+            'Content-Type': 'application/json', // Adjust as necessary
+            // Add other headers as needed
+        };
+
+        const response = await fetch(url, {
+            method: 'GET', // or 'POST', depending on your API
+            headers: headers // Include the headers
+        });
+
         // Check if the response is OK
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -64,4 +76,3 @@ async function fetchAndDisplayJSON() {
         document.getElementById('table-container').innerHTML = 'Failed to fetch data.';
     }
 }
-

@@ -1,51 +1,60 @@
 #!/bin/bash
 
-# Sample JSON input (modify this as needed)
+# Sample JSON input
 json='{
-  "teams": [
+  "people": [
     {
-      "name": "Team A",
-      "members": 5,
-      "address": [
-        "123 Main St",
-        "Apt 4B",
-        "12345"
-      ],
-      "skills": ["Leadership", "Strategy", "Communication"]
+      "name": "Alice",
+      "DOB": "1990-01-01",
+      "color": ["Blue"],
+      "texture": "Smooth"
     },
     {
-      "name": "Team B",
-      "members": 10,
-      "address": [
-        "456 Elm St",
-        "Suite 1",
-        "67890"
-      ],
-      "skills": ["Development", "Design", "Testing"]
+      "name": "Bob",
+      "DOB": "1985-05-12",
+      "color": ["Red", "Green"],
+      "texture": "Rough"
+    },
+    {
+      "name": "Charlie",
+      "DOB": "1979-10-23",
+      "color": ["Yellow", "Orange"],
+      "texture": "Smooth"
+    },
+    {
+      "name": "Daisy",
+      "DOB": "1982-03-14",
+      "color": ["Pink"],
+      "texture": "Grainy"
     }
   ]
 }'
 
 # Start the HTML structure
 echo "<html>"
-echo "<head><title>JSON Data</title></head>"
+echo "<head><title>People Data by Texture</title></head>"
 echo "<body>"
-echo "<h1>Teams Data</h1>"
-echo "<table border='1'>"
-echo "<tr><th>Name</th><th>Members</th><th>Address</th><th>Skills</th></tr>"
+echo "<h1>People Data Grouped by Texture</h1>"
 
-# Parse JSON and add rows to the HTML table
-echo "$json" | jq -r '
-  .teams[] | 
-  "<tr><td>" + 
-  .name + "</td><td>" + 
-  (.members | tostring) + "</td><td>" + 
-  (.address | join(", ")) + "</td><td>" + 
-  (.skills | join(", ")) + 
-  "</td></tr>"
-'
+# Get unique texture values and iterate over them
+textures=$(echo "$json" | jq -r '.people | map(.texture) | unique | .[]')
+
+# Loop through each texture and create a table for each
+for texture in $textures; do
+  echo "<h2>Texture: $texture</h2>"
+  echo "<table border='1'>"
+  echo "<tr><th>Name</th><th>DOB</th><th>Color</th></tr>"
+
+  # Filter JSON by current texture and output table rows
+  echo "$json" | jq -r --arg texture "$texture" '
+    .people | 
+    map(select(.texture == $texture))[] | 
+    "<tr><td>" + .name + "</td><td>" + .DOB + "</td><td>" + (.color | join(", ")) + "</td></tr>"
+  '
+
+  echo "</table>"
+done
 
 # End the HTML structure
-echo "</table>"
 echo "</body>"
 echo "</html>"

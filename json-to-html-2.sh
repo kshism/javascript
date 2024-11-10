@@ -4,7 +4,7 @@
 JSON_FILE="data.json"
 OUTPUT_HTML="output.html"
 
-# Start the HTML structure
+# Begin the HTML structure
 echo '<!DOCTYPE html>' > "$OUTPUT_HTML"
 echo '<html lang="en">' >> "$OUTPUT_HTML"
 echo '<head>' >> "$OUTPUT_HTML"
@@ -30,8 +30,11 @@ echo '            <th>Website</th>' >> "$OUTPUT_HTML"
 echo '            <th>Status</th>' >> "$OUTPUT_HTML"
 echo '        </tr>' >> "$OUTPUT_HTML"
 
-# Process each item in JSON array
-jq -c '.[]' "$JSON_FILE" | while read -r item; do
+# Read JSON array items into an array
+mapfile -t json_items < <(jq -c '.[]' "$JSON_FILE")
+
+# Process each item
+for item in "${json_items[@]}"; do
     # Extract values using jq
     name=$(echo "$item" | jq -r '.name')
     email=$(echo "$item" | jq -r '.email')

@@ -1,0 +1,1 @@
+echo "<tr><td>  xyzappl  </td><td>  121.324234.2  </td></tr>" | awk -F '<td>' '{gsub(/^[[:space:]]+/,"",$2); gsub(/^[[:space:]]+/,"",$3); print $2 "," $3}' | awk -F '</td>' '{gsub(/^[[:space:]]+/,"",$1); gsub(/^[[:space:]]+/,"",$2); print $1 "," $2}'
